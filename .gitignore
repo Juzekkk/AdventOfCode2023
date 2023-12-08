@@ -1,0 +1,9 @@
+# Ignore build folders in all directories
+**/build/
+
+# Ignore .vscode folders
+**/.vscode/
+
+# Ignore CMakeFiles folders
+
+**/CMakeFiles/
