@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <cctype>
+#include <iomanip>
 #include <map>
 
 std::string convertSpelledOutDigits(const std::string &line)
@@ -73,24 +74,31 @@ int sumVector(const std::vector<int> &numbers)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 3)
+    if (argc != 2)
     {
-        std::cerr << "Usage: " << argv[0] << " <conversion_option> <input_file_path>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <input_file_path>" << std::endl;
         return 1;
     }
 
-    std::string conversionOption = argv[1];
-    std::string inputFilePath = argv[2];
-
+    std::string inputFilePath = argv[1];
     std::ifstream file(inputFilePath);
     std::string line;
-    int sum = 0;
+    int sum1 = 0, sum2 = 0;
 
     if (!file)
     {
         std::cerr << "Unable to open file" << std::endl;
         return 1;
     }
+
+    const int colWidth = 50; // Set a column width for alignment
+
+    // Print table headers
+    std::cout << std::left << std::setw(colWidth) << "Original Line"
+              << std::setw(colWidth) << "Converted Line"
+              << std::setw(colWidth) << "Result 1"
+              << std::setw(colWidth) << "Result 2" << std::endl;
+    std::cout << std::string(80, '-') << std::endl; // Print a line to separate headers from data
 
     while (getline(file, line))
     {
@@ -99,22 +107,26 @@ int main(int argc, char *argv[])
 
         if (!line.empty())
         {
-            if (conversionOption == "one" || conversionOption == "two")
-            {
-                std::string convertedLine = conversionOption == "two" ? convertSpelledOutDigits(line) : line;
-                int result = concatenateFirstAndLastDigit(convertedLine);
-                std::cout << line << "\t" << convertedLine << "\t" << result << std::endl;
-                sum += result;
-            }
-            else
-            {
-                std::cerr << "Invalid conversion option: " << conversionOption << std::endl;
-                return 1;
-            }
+            std::string convertedLine = convertSpelledOutDigits(line);
+            int result1 = concatenateFirstAndLastDigit(line);
+            int result2 = concatenateFirstAndLastDigit(convertedLine);
+
+            // Print each row in table format
+            std::cout << std::left << std::setw(colWidth) << line
+                      << std::setw(colWidth) << convertedLine
+                      << std::setw(colWidth) << result1
+                      << std::setw(colWidth) << result2 << std::endl;
+
+            sum1 += result1;
+            sum2 += result2;
         }
     }
 
-    std::cout << "Sum of all results:\t" << sum << std::endl;
+    std::cout << std::string(80, '-') << std::endl; // Print a line to separate data from summary
+    std::cout << std::left << std::setw(colWidth) << "Sum of all results1:"
+              << std::setw(colWidth) << sum1 << std::endl;
+    std::cout << std::left << std::setw(colWidth) << "Sum of all results2:"
+              << std::setw(colWidth) << sum2 << std::endl;
 
     file.close();
     return 0;
