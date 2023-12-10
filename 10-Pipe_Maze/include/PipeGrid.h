@@ -12,6 +12,8 @@ public:
     int countVisitedPipes();
     void outputGridToConsole();
     void cleanUpGrid();
+    int countInsideLoopTiles();
+    void replaceStartSymbol();
 
 private:
     std::vector<std::string> grid;

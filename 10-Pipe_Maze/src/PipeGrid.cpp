@@ -107,3 +107,90 @@ void PipeGrid::cleanUpGrid()
         }
     }
 }
+
+int PipeGrid::countInsideLoopTiles()
+{
+    bool insideLoop = false;
+    int tilesEnclosedByLoop = 0;
+    bool lookingForJ = false, lookingFor7 = false;
+
+    for (int y = 0; y < gridHeight; ++y)
+    {
+        for (int x = 0; x < gridWidth; ++x)
+        {
+            if (visitedGrid[y][x])
+            { // on loop
+                switch (grid[y][x])
+                {
+                case '|':
+                    insideLoop = !insideLoop;
+                    break;
+                case 'F':
+                    lookingForJ = true;
+                    break;
+                case 'L':
+                    lookingFor7 = true;
+                    break;
+                case 'J':
+                    if (lookingForJ)
+                    {
+                        insideLoop = !insideLoop;
+                        lookingForJ = false;
+                    }
+                    lookingFor7 = false;
+                    break;
+                case '7':
+                    if (lookingFor7)
+                    {
+                        insideLoop = !insideLoop;
+                        lookingFor7 = false;
+                    }
+                    lookingForJ = false;
+                    break;
+                default:
+                    break;
+                }
+            }
+            else
+            { // not on loop
+                if (insideLoop)
+                {
+                    tilesEnclosedByLoop++;
+                    grid[y][x] = 'I';
+                }
+            }
+        }
+    }
+    return tilesEnclosedByLoop;
+}
+
+void PipeGrid::replaceStartSymbol()
+{
+    auto [startY, startX] = findStartLocation();
+    char newSymbol = ' ';
+
+    // Check each direction and determine the correct symbol
+    bool canMoveNorth = startY > 0 && isMoveValid(startY - 1, startX, South);
+    bool canMoveSouth = startY < gridHeight - 1 && isMoveValid(startY + 1, startX, North);
+    bool canMoveEast = startX < gridWidth - 1 && isMoveValid(startY, startX + 1, West);
+    bool canMoveWest = startX > 0 && isMoveValid(startY, startX - 1, East);
+
+    // Determine the new symbol based on possible movements
+    if (canMoveNorth && canMoveSouth && !canMoveEast && !canMoveWest)
+        newSymbol = '|';
+    else if (canMoveNorth && !canMoveSouth && canMoveWest && !canMoveEast)
+        newSymbol = 'J';
+    else if (canMoveNorth && !canMoveSouth && !canMoveWest && canMoveEast)
+        newSymbol = 'L';
+    else if (!canMoveNorth && canMoveSouth && canMoveWest && !canMoveEast)
+        newSymbol = '7';
+    else if (!canMoveNorth && canMoveSouth && !canMoveWest && canMoveEast)
+        newSymbol = 'F';
+    else if (!canMoveNorth && !canMoveSouth && canMoveWest && canMoveEast)
+        newSymbol = '-';
+    else
+        throw std::runtime_error("Incorrect number of connections to start");
+
+    // Replace 'S' with the determined symbol
+    grid[startY][startX] = newSymbol;
+}
