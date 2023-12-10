@@ -81,43 +81,29 @@ int PipeGrid::countVisitedPipes()
     return visitedCount;
 }
 
-void PipeGrid::outputGridToHtml(const std::string &filename)
+void PipeGrid::outputGridToConsole()
 {
-    std::ofstream htmlFile(filename);
-    if (!htmlFile.is_open())
-    {
-        std::cerr << "Error: Could not open the HTML file for writing." << std::endl;
-        return;
-    }
-
-    // HTML header
-    htmlFile << "<!DOCTYPE html><html><head><style>"
-             << "table {border-collapse: collapse;}"
-             << "td {width: 30px; height: 30px; text-align: center; color: white;}"
-             << "</style></head><body><table>";
-
     for (int i = 0; i < gridHeight; ++i)
     {
-        htmlFile << "<tr>";
         for (int j = 0; j < gridWidth; ++j)
         {
-            if (grid[i][j] == 'S')
+            char cellValue = grid[i][j];
+            std::cout << cellValue << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void PipeGrid::cleanUpGrid()
+{
+    for (int i = 0; i < gridHeight; ++i)
+    {
+        for (int j = 0; j < gridWidth; ++j)
+        {
+            if (!visitedGrid[i][j] && grid[i][j] != '.' && grid[i][j] != 'S')
             {
-                htmlFile << "<td style='background-color: green; border: 1px solid black;'>S</td>";
-            }
-            else if (visitedGrid[i][j])
-            {
-                htmlFile << "<td style='background-color: blue; border: 1px solid black;'>V</td>";
-            }
-            else
-            {
-                htmlFile << "<td style='color: black;'>.</td>";
+                grid[i][j] = '.';
             }
         }
-        htmlFile << "</tr>";
     }
-
-    // HTML footer
-    htmlFile << "</table></body></html>";
-    htmlFile.close();
 }

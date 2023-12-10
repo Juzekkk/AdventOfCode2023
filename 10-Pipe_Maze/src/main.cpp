@@ -29,9 +29,11 @@ int main(int argc, char *argv[])
 
     PipeGrid pipeGrid(inputGrid);
     int visitedPipes = pipeGrid.countVisitedPipes();
-    std::cout << "Distance to furthers pipe : " << visitedPipes / 2 << std::endl;
+    std::cout << "Distance to furthers pipe : " << visitedPipes / 2 << std::endl
+              << std::endl;
 
-    pipeGrid.outputGridToHtml("output.html");
+    pipeGrid.cleanUpGrid();
+    pipeGrid.outputGridToConsole();
 
     return 0;
 }

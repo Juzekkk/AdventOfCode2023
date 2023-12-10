@@ -10,7 +10,8 @@ class PipeGrid
 public:
     PipeGrid(const std::vector<std::string> &inputGrid);
     int countVisitedPipes();
-    void outputGridToHtml(const std::string &filename);
+    void outputGridToConsole();
+    void cleanUpGrid();
 
 private:
     std::vector<std::string> grid;
