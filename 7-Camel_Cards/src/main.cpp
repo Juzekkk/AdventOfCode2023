@@ -35,7 +35,6 @@ std::unordered_map<char, int> cardStrengthWithJokers = {
     {'2', 2},
     {'J', 1}};
 
-// Enum to represent hand types
 enum HandType
 {
     HighCard = 1,

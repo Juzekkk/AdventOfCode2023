@@ -6,11 +6,9 @@
 #include <algorithm>
 #include <climits>
 
-// Define types for Map and Range for clarity
 using Map = std::vector<std::tuple<long long, long long, long long>>;
 using Range = std::pair<long long, long long>;
 
-// Function to parse seeds from a line of text
 std::vector<long long> parseSeeds(const std::string &line)
 {
     std::vector<long long> seeds;
@@ -23,7 +21,6 @@ std::vector<long long> parseSeeds(const std::string &line)
     return seeds;
 }
 
-// Function to create ranges from a list of seed values
 std::vector<Range> createRanges(const std::vector<long long> &input)
 {
     std::vector<Range> result;
@@ -34,7 +31,6 @@ std::vector<Range> createRanges(const std::vector<long long> &input)
     return result;
 }
 
-// Function to minimize overlapping ranges
 std::vector<Range> minimizeRanges(const std::vector<Range> &ranges)
 {
     if (ranges.empty())
@@ -62,7 +58,6 @@ std::vector<Range> minimizeRanges(const std::vector<Range> &ranges)
     return result;
 }
 
-// Function to parse mappings from a file stream
 std::vector<Map> parseMappings(std::ifstream &file)
 {
     std::vector<Map> mappings;
@@ -85,7 +80,6 @@ std::vector<Map> parseMappings(std::ifstream &file)
     return mappings;
 }
 
-// Function to apply a single seed through a mapping
 long long applyMap(long long seed, const Map &map)
 {
     for (const auto &[destStart, srcStart, length] : map)
@@ -98,7 +92,6 @@ long long applyMap(long long seed, const Map &map)
     return seed;
 }
 
-// Function to apply a range through a mapping
 std::vector<Range> applyMapToRange(const Range &inputRange, const Map &map)
 {
     std::vector<Range> result;
@@ -115,7 +108,6 @@ std::vector<Range> applyMapToRange(const Range &inputRange, const Map &map)
     return result;
 }
 
-// Function to process a range through all maps
 std::vector<Range> processRangeThroughAllMaps(const Range &inputRange, const std::vector<Map> &allMaps)
 {
     std::vector<Range> currentRanges = {inputRange};
@@ -132,7 +124,6 @@ std::vector<Range> processRangeThroughAllMaps(const Range &inputRange, const std
     return currentRanges;
 }
 
-// Function to process a single seed through all maps
 long long processSingleSeedThroughAllMaps(long long seed, const std::vector<Map> &allMaps)
 {
     for (const auto &map : allMaps)
@@ -198,7 +189,6 @@ int main(int argc, char *argv[])
         std::cout << "\n";
     }
 
-    // Displaying the lowest range start from Part Two
     long long lowestRangeStart = LLONG_MAX;
     for (const auto &range : finalRangesPartTwo)
     {

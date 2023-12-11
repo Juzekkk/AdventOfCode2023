@@ -8,69 +8,63 @@
 #include <cmath>
 #include <iomanip>
 
-using namespace std;
-
 struct Card
 {
     int index;
-    unordered_set<int> winningNumbers;
-    unordered_set<int> myNumbers;
+    std::unordered_set<int> winningNumbers;
+    std::unordered_set<int> myNumbers;
 };
 
 void printCardInfo(const Card &card)
 {
-    cout << left << setw(10) << "Card " + to_string(card.index);
-    cout << setw(20) << "Winning Numbers: ";
+    std::cout << std::left << std::setw(10) << "Card " + std::to_string(card.index);
+    std::cout << std::setw(20) << "Winning Numbers: ";
     for (auto num : card.winningNumbers)
     {
-        cout << num << " ";
+        std::cout << num << " ";
     }
-    cout << setw(20) << "\tNumbers: ";
+    std::cout << std::setw(20) << "\tNumbers: ";
     for (auto num : card.myNumbers)
     {
-        cout << num << " ";
+        std::cout << num << " ";
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
-vector<Card> parseCardData(const string &filePath)
+std::vector<Card> parseCardData(const std::string &filePath)
 {
-    ifstream file(filePath);
+    std::ifstream file(filePath);
     if (!file.is_open())
     {
-        cerr << "Error opening file: " << filePath << endl;
+        std::cerr << "Error opening file: " << filePath << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    vector<Card> cards;
-    string line;
+    std::vector<Card> cards;
+    std::string line;
 
     while (getline(file, line))
     {
         Card card;
-        string winningNumbersStr, myNumbersStr;
-        istringstream iss(line);
+        std::string winningNumbersStr, myNumbersStr;
+        std::istringstream iss(line);
 
-        // Extracting the card index
-        iss >> ws;     // eat up any leading whitespace
-        iss.ignore(5); // ignore "Card "
+        iss >> std::ws;
+        iss.ignore(5);
         iss >> card.index;
-        iss.ignore(2); // ignore ": "
+        iss.ignore(2);
 
-        // Extracting the whole winning numbers string and my numbers string
         getline(iss, winningNumbersStr, '|');
         getline(iss, myNumbersStr);
 
-        // Parsing winning numbers
-        istringstream winningStream(winningNumbersStr);
+        std::istringstream winningStream(winningNumbersStr);
         int number;
         while (winningStream >> number)
         {
             card.winningNumbers.insert(number);
         }
 
-        // Parsing my numbers
-        istringstream myNumbersStream(myNumbersStr);
+        std::istringstream myNumbersStream(myNumbersStr);
         while (myNumbersStream >> number)
         {
             card.myNumbers.insert(number);
@@ -95,22 +89,20 @@ int countWinningNumbers(const Card &card)
     return count;
 }
 
-int calculateTotalScratchcards(const vector<Card> &cards)
+int calculateTotalScratchcards(const std::vector<Card> &cards)
 {
-    vector<int> scratchcards(cards.size(), 1); // Start with 1 copy of each card
+    std::vector<int> scratchcards(cards.size(), 1);
 
     for (int i = 0; i < cards.size(); ++i)
     {
         int wins = countWinningNumbers(cards[i]);
 
-        // Distribute wins to subsequent cards
         for (int j = i + 1; j <= i + wins && j < cards.size(); ++j)
         {
             scratchcards[j] += scratchcards[i];
         }
     }
 
-    // Sum up all the scratchcards
     int totalScratchcards = 0;
     for (int count : scratchcards)
     {
@@ -128,11 +120,11 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        cerr << "Usage: " << argv[0] << " <file_path>" << endl;
+        std::cerr << "Usage: " << argv[0] << " <file_path>" << std::endl;
         return 1;
     }
 
-    string filePath = argv[1];
+    std::string filePath = argv[1];
     auto cards = parseCardData(filePath);
     int totalPoints = 0;
 
@@ -145,10 +137,10 @@ int main(int argc, char *argv[])
         totalPoints += score;
     }
 
-    cout << string(70, '-') << endl; // Print a line for separation
-    cout << "Total Points: " << totalPoints << endl;
+    std::cout << std::string(70, '-') << std::endl; // Print a line for separation
+    std::cout << "Total Points: " << totalPoints << std::endl;
 
     int totalScratchcards = calculateTotalScratchcards(cards);
-    cout << "Total Scratchcards: " << totalScratchcards << endl;
+    std::cout << "Total Scratchcards: " << totalScratchcards << std::endl;
     return 0;
 }

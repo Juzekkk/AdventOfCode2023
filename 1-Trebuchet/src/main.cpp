@@ -91,14 +91,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    const int colWidth = 50; // Set a column width for alignment
+    const int colWidth = 50;
 
-    // Print table headers
+    // Print table for better representation of data
     std::cout << std::left << std::setw(colWidth) << "Original Line"
               << std::setw(colWidth) << "Converted Line"
               << std::setw(colWidth) << "Result 1"
               << std::setw(colWidth) << "Result 2" << std::endl;
-    std::cout << std::string(80, '-') << std::endl; // Print a line to separate headers from data
+    std::cout << std::string(80, '-') << std::endl;
 
     while (getline(file, line))
     {
@@ -111,7 +111,6 @@ int main(int argc, char *argv[])
             int result1 = concatenateFirstAndLastDigit(line);
             int result2 = concatenateFirstAndLastDigit(convertedLine);
 
-            // Print each row in table format
             std::cout << std::left << std::setw(colWidth) << line
                       << std::setw(colWidth) << convertedLine
                       << std::setw(colWidth) << result1
@@ -122,7 +121,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    std::cout << std::string(80, '-') << std::endl; // Print a line to separate data from summary
+    std::cout << std::string(80, '-') << std::endl;
     std::cout << std::left << std::setw(colWidth) << "Sum of all results1:"
               << std::setw(colWidth) << sum1 << std::endl;
     std::cout << std::left << std::setw(colWidth) << "Sum of all results2:"

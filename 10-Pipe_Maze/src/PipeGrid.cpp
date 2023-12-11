@@ -33,7 +33,7 @@ int PipeGrid::countInsideLoopTiles()
         for (int x = 0; x < gridWidth; ++x)
         {
             if (visitedGrid[y][x])
-            { // on loop
+            {
                 switch (grid[y][x])
                 {
                 case '|':
@@ -66,7 +66,7 @@ int PipeGrid::countInsideLoopTiles()
                 }
             }
             else
-            { // not on loop
+            {
                 if (insideLoop)
                 {
                     tilesEnclosedByLoop++;
@@ -118,13 +118,11 @@ void PipeGrid::replaceStartSymbol()
     auto [startY, startX] = findStartLocation();
     char newSymbol = ' ';
 
-    // Check each direction and determine the correct symbol
     bool canMoveNorth = startY > 0 && isMoveValid(startY - 1, startX, South);
     bool canMoveSouth = startY < gridHeight - 1 && isMoveValid(startY + 1, startX, North);
     bool canMoveEast = startX < gridWidth - 1 && isMoveValid(startY, startX + 1, West);
     bool canMoveWest = startX > 0 && isMoveValid(startY, startX - 1, East);
 
-    // Determine the new symbol based on possible movements
     if (canMoveNorth && canMoveSouth && !canMoveEast && !canMoveWest)
         newSymbol = '|';
     else if (canMoveNorth && !canMoveSouth && canMoveWest && !canMoveEast)
@@ -140,7 +138,6 @@ void PipeGrid::replaceStartSymbol()
     else
         throw std::runtime_error("Incorrect number of connections to start");
 
-    // Replace 'S' with the determined symbol
     grid[startY][startX] = newSymbol;
 }
 
@@ -156,17 +153,17 @@ bool PipeGrid::isPipeConnectable(char pipe, Direction dir) const
     switch (pipe)
     {
     case '|':
-        return dir == 0 || dir == 2; // North or South
+        return dir == 0 || dir == 2;
     case '-':
-        return dir == 1 || dir == 3; // East or West
+        return dir == 1 || dir == 3;
     case 'L':
-        return dir == 0 || dir == 1; // North or East
+        return dir == 0 || dir == 1;
     case 'J':
-        return dir == 0 || dir == 3; // North or West
+        return dir == 0 || dir == 3;
     case '7':
-        return dir == 2 || dir == 3; // South or West
+        return dir == 2 || dir == 3;
     case 'F':
-        return dir == 2 || dir == 1; // South or East
+        return dir == 2 || dir == 1;
     case 'S':
         return true;
     default:

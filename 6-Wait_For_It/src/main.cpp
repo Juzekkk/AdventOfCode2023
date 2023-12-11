@@ -33,7 +33,6 @@ std::vector<Race> parseFile(const std::string &filename)
         distances.push_back(distance);
     }
 
-    // Pair times and distances
     for (size_t i = 0; i < times.size(); ++i)
     {
         races.push_back({times[i], distances[i]});
@@ -92,7 +91,6 @@ int main(int argc, char *argv[])
     }
     std::cout << "Final result (excluding concatenated race): " << finalResult << std::endl;
 
-    // Create and display information about the additional concatenated race
     Race concatenatedRace = createConcatenatedRace(races);
     int winningCombinations = countWinningCombinations(concatenatedRace);
     std::cout << "Concatenated Race (Time: " << concatenatedRace.Time

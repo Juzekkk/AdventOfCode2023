@@ -90,7 +90,6 @@ int main(int argc, char *argv[])
     int totalID = 0;
     const int colWidth = 15;
 
-    // Print table header
     std::cout << std::left << std::setw(10) << "Game ID"
               << std::setw(15) << "Possibility"
               << std::setw(colWidth) << "Min Red"
@@ -114,7 +113,7 @@ int main(int argc, char *argv[])
         auto sets = parseGameSets(setsData);
         auto minCubes = findMinimumCubes(sets);
         long long power = cubeSetPower(minCubes);
-        bool possible = isGamePossible(sets, 12, 13, 14); // Assumes max cubes are 12, 13, 14
+        bool possible = isGamePossible(sets, 12, 13, 14);
 
         std::cout << std::left << std::setw(10) << gameID
                   << std::setw(15) << (possible ? "Possible" : "Impossible")
